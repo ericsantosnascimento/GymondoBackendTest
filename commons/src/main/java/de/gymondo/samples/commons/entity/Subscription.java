@@ -16,7 +16,7 @@ public class Subscription {
     private String name;
     private LocalDate expiration;
 
-    public Subscription(Builder builder) {
+    private Subscription(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
         this.expiration = builder.expiration;

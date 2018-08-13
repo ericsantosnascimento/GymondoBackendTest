@@ -3,6 +3,7 @@ package de.gymondo.samples.commons.repository;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import de.gymondo.samples.commons.entity.Subscription;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Optional;
  *
  * @author Rui Vilao (rui@gymondo.de)
  */
+@Repository
 public class SubscriptionRepository {
 
     /**
@@ -25,7 +27,7 @@ public class SubscriptionRepository {
      * @param userId The user userId.
      * @return The list of subscriptions.
      */
-    public List<Subscription> findByUserId(Integer userId) {
+    public List<Subscription> findByUserId(final Integer userId) {
         return Optional.ofNullable(SUBSCRIPTIONS.get(userId)).orElse(ImmutableList.of());
     }
 

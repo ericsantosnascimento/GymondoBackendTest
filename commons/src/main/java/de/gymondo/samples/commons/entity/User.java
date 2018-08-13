@@ -18,7 +18,7 @@ public class User {
     private String gender;
     private List<Subscription> subscriptions;
 
-    public User(Builder builder) {
+    private User(final Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
         this.age = builder.age;

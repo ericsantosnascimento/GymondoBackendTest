@@ -1,9 +1,15 @@
 package de.gymondo.samples.restapi.controller;
 
+import de.gymondo.samples.commons.entity.Subscription;
+import de.gymondo.samples.commons.entity.User;
 import de.gymondo.samples.commons.repository.SubscriptionRepository;
 import de.gymondo.samples.commons.repository.UserRepository;
+import de.gymondo.samples.restapi.dto.SubscriptionV1Dto;
 import de.gymondo.samples.restapi.dto.UserV1Dto;
-import de.gymondo.samples.restapi.transformation.TransformationsV1;
+import de.gymondo.samples.restapi.transformation.SubscriptionTransformationV1;
+import de.gymondo.samples.restapi.transformation.UserTransformationsV1;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,12 +27,23 @@ import java.util.List;
 @ResponseBody
 public class UserController {
 
-    private TransformationsV1 transformations = new TransformationsV1();
-
     // NOTE: In a real approach this would be calling the service layer and not the
     // persistence one directly.
-    private UserRepository userRepository = new UserRepository();
-    private SubscriptionRepository subscriptionRepository = new SubscriptionRepository();
+    private UserRepository userRepository;
+    private SubscriptionRepository subscriptionRepository;
+    private UserTransformationsV1 transformations;
+    private SubscriptionTransformationV1 subscriptionTransformationV1;
+
+    @Autowired
+    public UserController(final UserTransformationsV1 transformations,
+                          final UserRepository userRepository,
+                          final SubscriptionRepository subscriptionRepository,
+                          final SubscriptionTransformationV1 subscriptionTransformationV1) {
+        this.transformations = transformations;
+        this.userRepository = userRepository;
+        this.subscriptionRepository = subscriptionRepository;
+        this.subscriptionTransformationV1 = subscriptionTransformationV1;
+    }
 
     /**
      * Lists all the users.
@@ -38,19 +55,25 @@ public class UserController {
         return transformations.user2Dto(userRepository.findAll());
     }
 
-    /*
-     * TODO: Create an endpoint to get a single user by id.
+    /**
+     * Get user by id.
      *
-     * You can ignore the fact the user doesn't exist.
+     * @return The list of users.
      */
+    @RequestMapping(value = "{user_id}", method = RequestMethod.GET)
+    public UserV1Dto get(@PathVariable(value = "user_id") final Integer userId) {
+        final User user = userRepository.findOne(userId);
+        return transformations.user2Dto(user);
+    }
 
-
-
-
-
-    /*
-     * TODO: Create an endpoint to get all the subscriptions of a user given its id.
+    /**
+     * Get user subscriptions.
      *
-     * You can ignore the fact the user doesn't exist.
+     * @return The list of subscriptions for given user.
      */
+    @RequestMapping(value = "{user_id}/subscriptions", method = RequestMethod.GET)
+    public List<SubscriptionV1Dto> getSubscriptions(@PathVariable(value = "user_id") final Integer userId) {
+        final List<Subscription> subscriptions = subscriptionRepository.findByUserId(userId);
+        return subscriptionTransformationV1.mapSubscriptionToDto(subscriptions);
+    }
 }

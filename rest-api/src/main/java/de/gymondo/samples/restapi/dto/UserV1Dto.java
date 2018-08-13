@@ -6,6 +6,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import de.gymondo.samples.commons.builder.FluentBuilder;
 
+import java.util.List;
+
 /**
  * Data Transfer Object for user information.
  *
@@ -19,12 +21,14 @@ public class UserV1Dto implements Dto {
     private final String name;
     private final Integer age;
     private final String gender;
+    private final List<SubscriptionV1Dto> subscriptions;
 
-    public UserV1Dto(Builder builder) {
+    private UserV1Dto(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
         this.age = builder.age;
         this.gender = builder.gender;
+        this.subscriptions = builder.subscriptions;
     }
 
     public Integer getId() {
@@ -78,34 +82,44 @@ public class UserV1Dto implements Dto {
                 .toString();
     }
 
+    public List<SubscriptionV1Dto> getSubscriptions() {
+        return subscriptions;
+    }
+
     @JsonPOJOBuilder
     public static class Builder implements FluentBuilder<UserV1Dto> {
         private Integer id;
         private String name;
         private Integer age;
         private String gender;
+        private List<SubscriptionV1Dto> subscriptions;
 
-        public Builder withName(String name) {
+        public Builder withName(final String name) {
             this.name = name;
 
             return this;
         }
 
-        public Builder withId(Integer id) {
+        public Builder withId(final Integer id) {
             this.id = id;
 
             return this;
         }
 
-        public Builder withAge(Integer age) {
+        public Builder withAge(final Integer age) {
             this.age = age;
 
             return this;
         }
 
-        public Builder withGender(String gender) {
+        public Builder withGender(final String gender) {
             this.gender = gender;
 
+            return this;
+        }
+
+        public Builder withSubscriptions(final List<SubscriptionV1Dto> subscriptions) {
+            this.subscriptions = subscriptions;
             return this;
         }
 

@@ -10,8 +10,14 @@
 
     <parent>
         <groupId>de.gymondo.samples</groupId>
-        <artifactId>webapp-course</artifactId>
+        <artifactId>gymondo-backend-test</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+    </dependencies>
 </project>

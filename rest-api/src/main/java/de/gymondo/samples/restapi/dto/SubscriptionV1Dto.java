@@ -6,6 +6,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import de.gymondo.samples.commons.builder.FluentBuilder;
 
+import java.time.LocalDate;
+
 /**
  * Data Transfer Object for subscription information.
  *
@@ -13,12 +15,17 @@ import de.gymondo.samples.commons.builder.FluentBuilder;
  */
 @JsonDeserialize(builder = SubscriptionV1Dto.Builder.class)
 public class SubscriptionV1Dto implements Dto {
+
+    private static final long serialVersionUID = -4793835579929604582L;
+
     private final Integer id;
     private final String name;
+    private final LocalDate expirationDate;
 
-    public SubscriptionV1Dto(Builder builder) {
+    private SubscriptionV1Dto(final Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
+        this.expirationDate = builder.expirationDate;
     }
 
     public Integer getId() {
@@ -60,20 +67,28 @@ public class SubscriptionV1Dto implements Dto {
                 .toString();
     }
 
+    public LocalDate getExpirationDate() {
+        return expirationDate;
+    }
+
     @JsonPOJOBuilder
     public static class Builder implements FluentBuilder<SubscriptionV1Dto> {
         private Integer id;
         private String name;
+        private LocalDate expirationDate;
 
-        public Builder withName(String name) {
-            this.name = name;
-
+        public Builder withExpirationDate(final LocalDate expirationDate) {
+            this.expirationDate = expirationDate;
             return this;
         }
 
-        public Builder withId(Integer id) {
-            this.id = id;
+        public Builder withName(final String name) {
+            this.name = name;
+            return this;
+        }
 
+        public Builder withId(final Integer id) {
+            this.id = id;
             return this;
         }
 
